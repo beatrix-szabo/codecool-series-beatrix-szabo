@@ -1,0 +1,66 @@
+{% extends "design.html"%}
+
+{%block navcontent%}{{show[0]['title']}}{%endblock%}
+
+{%block headtitle%}{{show[0]['title']}}{%endblock%}
+{%block content%}
+<div class="card detailed-view">
+    <div class="row">
+        <img src="http://www.impawards.com/2016/posters/deadpool_ver5.jpg" alt=" poster"
+             class="poster col col-third">
+        <div class="col col-twothird">
+            <h2>{{show[0]['title']}}</h2>
+            <p class="small grayed">
+                {%if (show[0]['runtime']/60)|int > 0 and show[0]['runtime']%60 >0 %}
+                    {{(show[0]['runtime']/60)|int}}h {{show[0]['runtime']%60}}min
+                {%elif (show[0]['runtime']/60)|int > 0 and show[0]['runtime']%60 ==0 %}
+                    {{(show[0]['runtime']/60)|int}}h
+                {%elif (show[0]['runtime']/60)|int == 0 and show[0]['runtime']%60 >0 %}
+                    {{show[0]['runtime']%60}}min
+                {%endif%}
+                <span class="separator">|</span>{{show[0]['rating']|round(1)}}☆<span class="separator">|</span> {{show[0]['genre']}} <span class="separator">|</span> {{show[0]['year']}}</p>
+            <p>{{show[0]['overview']}}</p>
+            <p>
+                <b>Director:</b>
+            </p>
+            <p>
+                <b>Writers:</b>
+            </p>
+            <p>
+                <b>Actors:</b>
+                {{actors}}
+            </p>
+            
+            {% if show[0]['trailer'] != None%}
+                
+            <iframe width="560" height="315"   src="{{show[0]['trailer']|replace('watch?v=', 'embed/')}}" allowfullscreen-></iframe>
+            {%endif %}
+    </div>
+    </div>
+</div>
+    
+
+
+
+        <div  class='card'>
+            <h3 style="text-align: center;">seasons</h3>
+            <table>
+                <tr>
+                    <th>      </th>
+                    <th>Title</th>
+                    <th>overview</th>
+                </tr>
+                {%for season in seasons%}
+                <tr>
+                    <td>{{season['season_number']}}</td>
+                    <td>{{season['title']}}</td>
+                    {% if season['overview'] == None %}
+                        <td></td>
+                    {%elif season['overview'] != None%}
+                        <td>{{season['overview']}}</td>
+                    {%endif%}
+                </tr>
+                {%endfor%}
+            </table>
+        </div>
+{%endblock%}

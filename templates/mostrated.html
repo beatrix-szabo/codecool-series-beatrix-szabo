@@ -1,0 +1,60 @@
+{% extends "design.html"%}
+
+{%block navcontent%}/most-rated-shows{%endblock%}
+
+{%block headtitle%} Shows{%endblock%}
+{%block content%}
+    <div class="card">
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Year</th>
+                <th>Runtime(min)</th>
+                <th>Rating</th>
+                <th>Genre</th>
+                <th>Trailer</th>
+                <th>Home Page</th>
+            </tr>
+            {% set pageNum = pageNum|int%}
+
+                {% set secondPageNum = pageNum-1%}
+      
+            {%for show in topShows%}
+                {% set index = loop.index%}
+                    
+                    {%if secondPageNum*15 < index <= pageNum*15%}
+                        <tr>
+                            <td><a href="/tv-show/{{ show['id'] }}">{{ show['title'] }}</a></td>
+                            <td>{{ show['year'] }}</td>
+                            <td>{{ show['runtime'] }}</td>
+                            <td>{{ show['rating']|round(1) }}</td>
+                            <td>{{show['genre']}}</td>
+                            {% if show['trailer']  == None %}
+                                <td>NoUrl</td>
+                            {% elif show['trailer'] != "" %}
+                                <td><a href="{{ show['trailer'] }}">Trailer</a></td>
+                            {%endif%}
+
+                                {% if show['homepage']  == None %}
+                                    <td>NoUrl</td>
+                                {% elif show['homepage'] != "" %}
+                                    <td><a href="{{ show['homepage'] }}">home Page</a></td>
+                            {%endif%}
+                        </tr>
+                    {%endif%}
+
+            {%endfor%}
+        </table>
+    </div>
+    <div class="card" >
+        {%for s in topShows%}
+            {%set i = loop.index %}
+            {%if i %15 == 0 %}
+            {%set i = i//15|int %}
+                <a href="/shows/most-rated/{{i}}"><button>{{i}}</button></a>
+            {%endif%}
+        {% endfor%}
+        {%set i = (topShows|length/15)|round|int + 1%}
+        <a href="/shows/most-rated/{{i}}"><button>{{i}}</button></a>
+    </div>
+{%endblock%}
